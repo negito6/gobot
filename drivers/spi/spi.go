@@ -74,7 +74,7 @@ func (c *SpiConnection) Tx(w, r []byte) error {
 }
 
 // GetSpiConnection is a helper to return a SPI device.
-func GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed int64) (Connection, error) {
+func GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed physic.Frequency) (Connection, error) {
 	p, err := xsysfs.NewSPI(busNum, chipNum)
 	if err != nil {
 		return nil, err
