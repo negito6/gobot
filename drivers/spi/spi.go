@@ -2,6 +2,7 @@ package spi
 
 import (
 	xspi "periph.io/x/periph/conn/spi"
+	xphysic "periph.io/x/periph/conn/physic"
 	xsysfs "periph.io/x/periph/host/sysfs"
 )
 
@@ -22,7 +23,7 @@ type Connector interface {
 	// GetSpiConnection returns a connection to a SPI device at the specified bus and chip.
 	// Bus numbering starts at index 0, the range of valid buses is
 	// platform specific. Same with chip numbering.
-	GetSpiConnection(busNum, chip, mode, bits int, maxSpeed int64) (device Connection, err error)
+	GetSpiConnection(busNum, chip, mode, bits int, maxSpeed xphysic.Frequency) (device Connection, err error)
 
 	// GetSpiDefaultBus returns the default SPI bus index
 	GetSpiDefaultBus() int
@@ -37,7 +38,7 @@ type Connector interface {
 	GetSpiDefaultBits() int
 
 	// GetSpiDefaultMaxSpeed returns the max SPI speed
-	GetSpiDefaultMaxSpeed() int64
+	GetSpiDefaultMaxSpeed() xphysic.Frequency
 }
 
 // Connection is a connection to a SPI device with a specific bus/chip.
@@ -54,7 +55,7 @@ type SpiConnection struct {
 	chip     int
 	bits     int
 	mode     int
-	maxSpeed int64
+	maxSpeed xphysic.Frequency
 }
 
 // NewConnection creates and returns a new connection to a specific
@@ -74,7 +75,7 @@ func (c *SpiConnection) Tx(w, r []byte) error {
 }
 
 // GetSpiConnection is a helper to return a SPI device.
-func GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed int64) (Connection, error) {
+func GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed xphysic.Frequency) (Connection, error) {
 	p, err := xsysfs.NewSPI(busNum, chipNum)
 	if err != nil {
 		return nil, err

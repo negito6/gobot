@@ -1,11 +1,13 @@
 package spi
 
+import "periph.io/x/periph/conn/physic"
+
 type spiConfig struct {
 	bus   int
 	chip  int
 	mode  int
 	bits  int
-	speed int64
+	speed physic.Frequency
 }
 
 // Config is the interface which describes how a Driver can specify
@@ -36,10 +38,10 @@ type Config interface {
 	GetBitsOrDefault(def int) int
 
 	// WithSpeed sets which speed to use (in Hz)
-	WithSpeed(speed int64)
+	WithSpeed(speed physic.Frequency)
 
 	// GetSpeedOrDefault gets which speed to use (in Hz)
-	GetSpeedOrDefault(def int64) int64
+	GetSpeedOrDefault(def physic.Frequency) physic.Frequency
 }
 
 // NewConfig returns a new SPI Config.
@@ -137,13 +139,13 @@ func WithBits(bits int) func(Config) {
 }
 
 // WithSpeed sets which SPI speed to use.
-func (s *spiConfig) WithSpeed(speed int64) {
+func (s *spiConfig) WithSpeed(speed physic.Frequency) {
 	s.speed = speed
 }
 
 // GetSpeedOrDefault returns what speed to use, either the one set using WithSpeed(),
 // or the default value which is passed in as the one param.
-func (s *spiConfig) GetSpeedOrDefault(d int64) int64 {
+func (s *spiConfig) GetSpeedOrDefault(d physic.Frequency) physic.Frequency {
 	if s.speed == NotInitialized {
 		return d
 	}
@@ -151,7 +153,7 @@ func (s *spiConfig) GetSpeedOrDefault(d int64) int64 {
 }
 
 // WithSpeed sets what speed to use as a optional param.
-func WithSpeed(speed int64) func(Config) {
+func WithSpeed(speed physic.Frequency) func(Config) {
 	return func(s Config) {
 		s.WithSpeed(speed)
 	}

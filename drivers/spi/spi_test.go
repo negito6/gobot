@@ -7,7 +7,7 @@ import (
 
 type TestConnector struct{}
 
-func (ctr *TestConnector) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed int64) (device Connection, err error) {
+func (ctr *TestConnector) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed physic.Frequency) (device Connection, err error) {
 	return NewConnection(&TestSpiConnection{}, &TestSpiDevice{}), nil
 }
 
@@ -27,7 +27,7 @@ func (ctr *TestConnector) GetSpiDefaultBits() int {
 	return 0
 }
 
-func (ctr *TestConnector) GetSpiDefaultMaxSpeed() int64 {
+func (ctr *TestConnector) GetSpiDefaultMaxSpeed() physic.Frequency {
 	return 0
 }
 
@@ -55,7 +55,7 @@ func (c *TestSpiConnection) Close() error {
 	return nil
 }
 
-func (c *TestSpiConnection) Connect(maxHz int64, mode xspi.Mode, bits int) (xspi.Conn, error) {
+func (c *TestSpiConnection) Connect(maxHz physic.Frequency, mode xspi.Mode, bits int) (xspi.Conn, error) {
 	return nil, nil
 }
 
