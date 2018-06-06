@@ -29,7 +29,7 @@ type MCP3208Driver struct {
 //     	spi.WithChip(int):    	chip to use with this driver
 //      spi.WithMode(int):    	mode to use with this driver
 //      spi.WithBits(int):    	number of bits to use with this driver
-//      spi.WithSpeed(int64):   speed in Hz to use with this driver
+//      spi.WithSpeed(physic.Frequency):   speed in Hz to use with this driver
 //
 func NewMCP3208Driver(a Connector, options ...func(Config)) *MCP3208Driver {
 	d := &MCP3208Driver{

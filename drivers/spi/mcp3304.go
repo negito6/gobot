@@ -29,7 +29,7 @@ type MCP3304Driver struct {
 //     	spi.WithChip(int):    	chip to use with this driver
 //      spi.WithMode(int):    	mode to use with this driver
 //      spi.WithBits(int):    	number of bits to use with this driver
-//      spi.WithSpeed(int64):   speed in Hz to use with this driver
+//      spi.WithSpeed(physic.Frequency):   speed in Hz to use with this driver
 //
 func NewMCP3304Driver(a Connector, options ...func(Config)) *MCP3304Driver {
 	d := &MCP3304Driver{

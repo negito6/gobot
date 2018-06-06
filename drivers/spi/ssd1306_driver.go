@@ -180,7 +180,7 @@ type SSD1306Driver struct {
 //     	spi.WithChip(int):    		chip to use with this driver
 //      spi.WithMode(int):    		mode to use with this driver
 //      spi.WithBits(int):    		number of bits to use with this driver
-//      spi.WithSpeed(int64):   	speed in Hz to use with this driver
+//      spi.WithSpeed(physic.Frequency):   	speed in Hz to use with this driver
 //      spi.WithDisplayWidth(int): 	width of display (defaults to 128)
 //      spi.WithDisplayHeight(int): height of display (defaults to 64)
 //      spi.WithDCPin(string): 		gpio pin number connected to dc pin on display (defaults to "16")
