@@ -14,6 +14,7 @@ import (
 	"gobot.io/x/gobot/drivers/i2c"
 	"gobot.io/x/gobot/drivers/spi"
 	"gobot.io/x/gobot/sysfs"
+       "periph.io/x/periph/conn/physic"
 )
 
 type pwmPinData struct {
@@ -40,7 +41,7 @@ type Adaptor struct {
 	spiDefaultChip     int
 	spiBuses           [2]spi.Connection
 	spiDefaultMode     int
-	spiDefaultMaxSpeed int64
+	spiDefaultMaxSpeed physic.Frequency
 }
 
 // NewAdaptor returns a new Beaglebone Black/Green Adaptor
@@ -70,7 +71,7 @@ func (b *Adaptor) setPaths() {
 
 	b.spiDefaultBus = 0
 	b.spiDefaultMode = 0
-	b.spiDefaultMaxSpeed = 500000
+	b.spiDefaultMaxSpeed = 500*physic.KiloHertz
 }
 
 // Name returns the Adaptor name
@@ -283,7 +284,7 @@ func (b *Adaptor) GetDefaultBus() int {
 
 // GetSpiConnection returns an spi connection to a device on a specified bus.
 // Valid bus number is [0..1] which corresponds to /dev/spidev0.0 through /dev/spidev0.1.
-func (b *Adaptor) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed int64) (connection spi.Connection, err error) {
+func (b *Adaptor) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed physic.Frequency) (connection spi.Connection, err error) {
 	b.mutex.Lock()
 	defer b.mutex.Unlock()
 
@@ -319,7 +320,7 @@ func (b *Adaptor) GetSpiDefaultBits() int {
 }
 
 // GetSpiDefaultMaxSpeed returns the default spi bus for this platform.
-func (b *Adaptor) GetSpiDefaultMaxSpeed() int64 {
+func (b *Adaptor) GetSpiDefaultMaxSpeed() physic.Frequency {
 	return b.spiDefaultMaxSpeed
 }
 

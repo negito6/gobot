@@ -14,6 +14,7 @@ import (
 	"gobot.io/x/gobot/drivers/i2c"
 	"gobot.io/x/gobot/drivers/spi"
 	"gobot.io/x/gobot/sysfs"
+	"periph.io/x/periph/conn/physic"
 )
 
 var readFile = func() ([]byte, error) {
@@ -33,7 +34,7 @@ type Adaptor struct {
 	spiDefaultChip     int
 	spiDevices         [2]spi.Connection
 	spiDefaultMode     int
-	spiDefaultMaxSpeed int64
+	spiDefaultMaxSpeed physic.Frequency
 }
 
 // NewAdaptor creates a Raspi Adaptor
@@ -53,7 +54,7 @@ func NewAdaptor() *Adaptor {
 			r.spiDefaultBus = 0
 			r.spiDefaultChip = 0
 			r.spiDefaultMode = 0
-			r.spiDefaultMaxSpeed = 500000
+			r.spiDefaultMaxSpeed = 500*physic.KiloHertz
 			if version <= 3 {
 				r.revision = "1"
 				r.i2cDefaultBus = 0
@@ -209,7 +210,7 @@ func (r *Adaptor) GetDefaultBus() int {
 
 // GetSpiConnection returns an spi connection to a device on a specified bus.
 // Valid bus number is [0..1] which corresponds to /dev/spidev0.0 through /dev/spidev0.1.
-func (r *Adaptor) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed int64) (connection spi.Connection, err error) {
+func (r *Adaptor) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed physic.Frequency) (connection spi.Connection, err error) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -245,7 +246,7 @@ func (r *Adaptor) GetSpiDefaultBits() int {
 }
 
 // GetSpiDefaultMaxSpeed returns the default spi bus for this platform.
-func (r *Adaptor) GetSpiDefaultMaxSpeed() int64 {
+func (r *Adaptor) GetSpiDefaultMaxSpeed() physic.Frequency {
 	return r.spiDefaultMaxSpeed
 }
 

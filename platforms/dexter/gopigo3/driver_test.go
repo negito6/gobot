@@ -7,6 +7,7 @@ import (
 	"gobot.io/x/gobot"
 	"gobot.io/x/gobot/drivers/spi"
 	"gobot.io/x/gobot/gobottest"
+	"periph.io/x/periph/conn/physic"
 )
 
 var _ gobot.Driver = (*Driver)(nil)
@@ -248,7 +249,7 @@ func TestDigitalWrite(t *testing.T) {
 
 type TestConnector struct{}
 
-func (ctr *TestConnector) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed int64) (device spi.Connection, err error) {
+func (ctr *TestConnector) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed physic.Frequency) (device spi.Connection, err error) {
 	return TestSpiDevice{}, nil
 }
 
@@ -268,7 +269,7 @@ func (ctr *TestConnector) GetSpiDefaultBits() int {
 	return 8
 }
 
-func (ctr *TestConnector) GetSpiDefaultMaxSpeed() int64 {
+func (ctr *TestConnector) GetSpiDefaultMaxSpeed() physic.Frequency {
 	return 0
 }
 

@@ -10,6 +10,7 @@ import (
 	"gobot.io/x/gobot/drivers/i2c"
 	"gobot.io/x/gobot/drivers/spi"
 	"gobot.io/x/gobot/sysfs"
+       "periph.io/x/periph/conn/physic"
 )
 
 type sysfsPin struct {
@@ -29,7 +30,7 @@ type Adaptor struct {
 	spiDefaultChip     int
 	spiBuses           [2]spi.Connection
 	spiDefaultMode     int
-	spiDefaultMaxSpeed int64
+	spiDefaultMaxSpeed physic.Frequency
 }
 
 // NewAdaptor creates a UP2 Adaptor
@@ -230,7 +231,7 @@ func (c *Adaptor) GetDefaultBus() int {
 
 // GetSpiConnection returns an spi connection to a device on a specified bus.
 // Valid bus number is [0..1] which corresponds to /dev/spidev0.0 through /dev/spidev0.1.
-func (c *Adaptor) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed int64) (connection spi.Connection, err error) {
+func (c *Adaptor) GetSpiConnection(busNum, chipNum, mode, bits int, maxSpeed physic.Frequency) (connection spi.Connection, err error) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
@@ -266,7 +267,7 @@ func (c *Adaptor) GetSpiDefaultBits() int {
 }
 
 // GetSpiDefaultMaxSpeed returns the default spi max speed for this platform.
-func (c *Adaptor) GetSpiDefaultMaxSpeed() int64 {
+func (c *Adaptor) GetSpiDefaultMaxSpeed() physic.Frequency {
 	return c.spiDefaultMaxSpeed
 }
 
